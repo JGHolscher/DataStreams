@@ -1,5 +1,6 @@
 public class DataStreamsRunner {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        DataStreamsFrame frame = new DataStreamsFrame();
+
     }
 }
