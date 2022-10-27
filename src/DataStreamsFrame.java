@@ -1,6 +1,16 @@
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class DataStreamsFrame extends JFrame {
     JPanel mainPnl, tAndCPnl, titlePnl, chosenStringPnl, displayPnl, fileDisplayPnl, filterDisplayPnl, buttonPnl;
@@ -8,9 +18,12 @@ public class DataStreamsFrame extends JFrame {
     JTextField csTF, fTF;
     JTextArea fileTA, filteredTA;
     JScrollPane scroller;
+    JButton quitBtn, loadBtn, searchBtn;
+    ArrayList<String> fileInfo;
+
 
     String chosenString = "";
-    String fileName = "";
+
     public DataStreamsFrame()
     {
         setTitle("Data Streams");
@@ -42,13 +55,14 @@ public class DataStreamsFrame extends JFrame {
         mainPnl.add(tAndCPnl, BorderLayout.NORTH);
         mainPnl.add(displayPnl, BorderLayout.CENTER);
 
-        createTitlePanel();
+        createTitlePnl();
         createChosenStringPnl();
         createFileDisplayPnl();
         createFilterDisplayPnl();
+        createButtonPanel();
     }
 
-    private void createTitlePanel(){
+    private void createTitlePnl(){
         titlePnl = new JPanel();
 
         titleLbl = new JLabel("String Locator", JLabel.CENTER);
@@ -66,7 +80,7 @@ public class DataStreamsFrame extends JFrame {
         chosenStringPnl = new JPanel();
 
         fLbl = new JLabel("File:");
-        fTF = new JTextField(" " + fileName + " ");
+        fTF = new JTextField(" ");
 
         csLbl = new JLabel("Searching For:");
         csTF = new JTextField(" " + chosenString + " ");
@@ -94,7 +108,7 @@ public class DataStreamsFrame extends JFrame {
 
 
 
-        fileTA =  new JTextArea(30, 55);
+        fileTA =  new JTextArea(30, 50);
         scroller = new JScrollPane(fileTA);
         fileTA.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
@@ -108,7 +122,7 @@ public class DataStreamsFrame extends JFrame {
     private void createFilterDisplayPnl(){
         filterDisplayPnl = new JPanel();
 
-        filteredTA =  new JTextArea(30, 55);
+        filteredTA =  new JTextArea(30, 50);
         scroller = new JScrollPane(filteredTA);
         filteredTA.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
@@ -118,7 +132,81 @@ public class DataStreamsFrame extends JFrame {
         displayPnl.add(filterDisplayPnl, new GridLayout(1,2));
     }
 
+    private void createButtonPanel() {
+        buttonPnl = new JPanel();
+        buttonPnl.setLayout(new GridLayout(1, 3));
+
+        loadBtn = new JButton("Pick File");
+        loadBtn.setFont(new Font("Comic Sans MS", Font.PLAIN, 48));
+        quitBtn = new JButton("Quit");
+        quitBtn.setFont(new Font("Comic Sans MS", Font.PLAIN, 48));
+        searchBtn = new JButton("Find String");
+        searchBtn.setFont(new Font("Comic Sans MS", Font.PLAIN, 48));
+
+        buttonPnl.add(loadBtn);
+        buttonPnl.add(searchBtn);
+        buttonPnl.add(quitBtn);
+
+        mainPnl.add(buttonPnl, BorderLayout.SOUTH);
+
+        quitBtn.addActionListener(new ActionListener() {//DONE
+            JOptionPane pane =new JOptionPane();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(pane,"Do you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.YES_OPTION){System.exit(0);}
+                else {setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                }}});
 
 
 
+        loadBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                readFile();
+            }
+        });
+        
+    }
+
+
+    JFileChooser chooser = new JFileChooser();
+    String chosenFile;
+    //Stream line = null;
+
+
+
+    //String line = "";
+
+    
+
+
+    private void readFile(){
+        Path target = new File(System.getProperty("user.dir")).toPath();
+        target = target.resolve("src");
+        chooser.setCurrentDirectory(target.toFile());
+
+
+        //Stream lines = Files.lines(Paths.get(FILEPATH))
+        
+        try {
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                target = chooser.getSelectedFile().toPath();
+
+                Scanner inFile = new Scanner(target);
+                while (inFile.hasNextLine()) {
+
+                    chosenFile = chooser.getSelectedFile().getName();
+                    fTF.setText(chosenFile);
+
+                }
+                inFile.close();
+            } else {
+                fileTA.setText("File not chosen. Try again!");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
