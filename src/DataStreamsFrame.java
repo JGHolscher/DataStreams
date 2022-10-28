@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,9 +24,6 @@ public class DataStreamsFrame extends JFrame {
     JScrollPane scroller;
     JButton quitBtn, loadBtn, searchBtn;
     List<String> fileInfo;
-
-
-    String chosenString = "";
 
 
 
@@ -181,10 +182,18 @@ public class DataStreamsFrame extends JFrame {
 
             }
         });
+
+        searchBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterFile();
+
+            }
+        });
         
     }
 
-    //read the file and the name
+    //read the file and the name --- and print
     private void readFile(){
         Path target = new File(System.getProperty("user.dir")).toPath();
         target = target.resolve("src");
@@ -204,15 +213,19 @@ public class DataStreamsFrame extends JFrame {
                     chosenFileName = chosenFile.getName(); //print name of file
                     fTF.setText(chosenFileName);  //          ^+
 
+                    
 
-
+                    //int lineNumber = Thread.currentThread().getStackTrace()[0].getLineNumber();
                     fileInfo = new ArrayList<>();
                     try (Stream<String> stream = Files.lines(Paths.get(String.valueOf(file)))) {
 
                         fileInfo = stream
                                 .map(String::toUpperCase)
                                 .collect(Collectors.toList());
+                                //.indexOf();
                     }
+
+
 
                     //fileInfo.forEach(fileTA::append);
                     for(Object line : fileInfo){
@@ -260,9 +273,38 @@ public class DataStreamsFrame extends JFrame {
     }
 
     */
+
+    //filter the file
+    private void filterFile() {
+        String searchWords = JOptionPane.showInputDialog("Please word you would like to search for:");
+        csTF.setText(searchWords);
+        try {
+            List<String> results = fileInfo.stream().filter(str -> str.toLowerCase(Locale.ROOT).contains(searchWords)).collect(Collectors.toList());
+
+            for (String lines : results) {
+                filteredTA.append(lines + "\n\n");
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+/*
+        Highlighter highlighter = filteredTA.getHighlighter();
+        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.green);
+        int p0 = filteredTA.getText().indexOf(searchWords);
+        int p1 = p0 + searchWords.length();
+
+        try {
+            highlighter.removeAllHighlights();
+            highlighter.addHighlight(p0, p1, painter);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+ */
+    }
 }
 
 
-    //filter the file
 
 
