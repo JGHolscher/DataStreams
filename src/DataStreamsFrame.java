@@ -1,15 +1,15 @@
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DataStreamsFrame extends JFrame {
@@ -19,10 +19,21 @@ public class DataStreamsFrame extends JFrame {
     JTextArea fileTA, filteredTA;
     JScrollPane scroller;
     JButton quitBtn, loadBtn, searchBtn;
-    ArrayList<String> fileInfo;
+    List<String> fileInfo;
 
 
     String chosenString = "";
+
+
+
+    JFileChooser chooser = new JFileChooser();
+    File chosenFile;
+    String chosenFileName;
+
+
+
+
+
 
     public DataStreamsFrame()
     {
@@ -38,12 +49,11 @@ public class DataStreamsFrame extends JFrame {
         setSize((screenWidth /4) * 3 , screenHeight);
         setLocationRelativeTo(null); //centers
 
-        setVisible(true);
-
         //--------
 
         mainPnl = new JPanel();
         mainPnl.setLayout(new BorderLayout());
+
         add(mainPnl);
 
         tAndCPnl = new JPanel();
@@ -60,6 +70,9 @@ public class DataStreamsFrame extends JFrame {
         createFileDisplayPnl();
         createFilterDisplayPnl();
         createButtonPanel();
+
+
+        setVisible(true);
     }
 
     private void createTitlePnl(){
@@ -80,16 +93,16 @@ public class DataStreamsFrame extends JFrame {
         chosenStringPnl = new JPanel();
 
         fLbl = new JLabel("File:");
-        fTF = new JTextField(" ");
+        fTF = new JTextField("                             ");
 
         csLbl = new JLabel("Searching For:");
-        csTF = new JTextField(" " + chosenString + " ");
+        csTF = new JTextField("                             ");
 
         fLbl.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
-        fTF.setFont(new Font("Comic Sans MS", Font.PLAIN, 32));
+        fTF.setFont(new Font("Monospaced", Font.PLAIN, 20));
 
         csLbl.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
-        csTF.setFont(new Font("Comic Sans MS", Font.PLAIN, 32));
+        csTF.setFont(new Font("Monospaced", Font.PLAIN, 20));
 
         chosenStringPnl.add(fLbl);
         chosenStringPnl.add(fTF);
@@ -108,9 +121,9 @@ public class DataStreamsFrame extends JFrame {
 
 
 
-        fileTA =  new JTextArea(30, 50);
+        fileTA =  new JTextArea(30, 90);
         scroller = new JScrollPane(fileTA);
-        fileTA.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        fileTA.setFont(new Font("Monospaced", Font.PLAIN, 10));
 
         fileDisplayPnl.add(scroller);
         fileTA.setEditable(false);
@@ -122,9 +135,9 @@ public class DataStreamsFrame extends JFrame {
     private void createFilterDisplayPnl(){
         filterDisplayPnl = new JPanel();
 
-        filteredTA =  new JTextArea(30, 50);
+        filteredTA =  new JTextArea(30, 90);
         scroller = new JScrollPane(filteredTA);
-        filteredTA.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        filteredTA.setFont(new Font("Monospaced", Font.PLAIN, 10));
 
         filterDisplayPnl.add(scroller);
         filteredTA.setEditable(false);
@@ -156,7 +169,8 @@ public class DataStreamsFrame extends JFrame {
                 int result = JOptionPane.showConfirmDialog(pane,"Do you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
                 if(result == JOptionPane.YES_OPTION){System.exit(0);}
                 else {setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                }}});
+                }
+            }});
 
 
 
@@ -164,31 +178,19 @@ public class DataStreamsFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 readFile();
+
             }
         });
         
     }
 
-
-    JFileChooser chooser = new JFileChooser();
-    String chosenFile;
-    //Stream line = null;
-
-
-
-    //String line = "";
-
-    
-
-
+    //read the file and the name
     private void readFile(){
         Path target = new File(System.getProperty("user.dir")).toPath();
         target = target.resolve("src");
         chooser.setCurrentDirectory(target.toFile());
+        Stream fileLines = null;
 
-
-        //Stream lines = Files.lines(Paths.get(FILEPATH))
-        
         try {
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 target = chooser.getSelectedFile().toPath();
@@ -196,17 +198,71 @@ public class DataStreamsFrame extends JFrame {
                 Scanner inFile = new Scanner(target);
                 while (inFile.hasNextLine()) {
 
-                    chosenFile = chooser.getSelectedFile().getName();
-                    fTF.setText(chosenFile);
+                    chosenFile = chooser.getSelectedFile();
+                    Path file = chosenFile.toPath();
 
+                    chosenFileName = chosenFile.getName(); //print name of file
+                    fTF.setText(chosenFileName);  //          ^+
+
+
+
+                    fileInfo = new ArrayList<>();
+                    try (Stream<String> stream = Files.lines(Paths.get(String.valueOf(file)))) {
+
+                        fileInfo = stream
+                                .map(String::toUpperCase)
+                                .collect(Collectors.toList());
+                    }
+
+                    //fileInfo.forEach(fileTA::append);
+                    for(Object line : fileInfo){
+                        fileTA.append(line + "\n");
+                    }
+                    break;
+
+
+
+
+
+
+                    //Stream lines = Files.lines(file); //break apart
+                    //fileLines = Files.lines(file);
+                    //printFile();
                 }
                 inFile.close();
             } else {
                 fileTA.setText("File not chosen. Try again!");
             }
         } catch (IOException e) {
+            //throw new RuntimeException(e);
+            e.printStackTrace();
+        }
+       //return fileLines;
+    }
+
+    //print the file with each new line from the file numbered
+   /* private void printFile(){
+        String lineNum;
+        String rec;
+        try{
+            for(Object line : readFile().toArray()){
+
+                fileTA.append(line + "\n");
+
+                fileInfo.add(String.valueOf(line));
+            }
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+
     }
+
+    */
 }
+
+
+    //filter the file
+
+
