@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,18 +25,12 @@ public class DataStreamsFrame extends JFrame {
     List<String> fileInfo;
 
 
-
     JFileChooser chooser = new JFileChooser();
     File chosenFile;
     String chosenFileName;
 
 
-
-
-
-
-    public DataStreamsFrame()
-    {
+    public DataStreamsFrame() {
         setTitle("Data Streams");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -47,7 +40,7 @@ public class DataStreamsFrame extends JFrame {
         int screenHeight = screenSize.height;
         int screenWidth = screenSize.width;
 
-        setSize((screenWidth /4) * 3 , screenHeight);
+        setSize((screenWidth / 4) * 3, screenHeight);
         setLocationRelativeTo(null); //centers
 
         //--------
@@ -58,10 +51,10 @@ public class DataStreamsFrame extends JFrame {
         add(mainPnl);
 
         tAndCPnl = new JPanel();
-        tAndCPnl.setLayout(new GridLayout(2,1));
+        tAndCPnl.setLayout(new GridLayout(2, 1));
 
         displayPnl = new JPanel();
-        displayPnl.setLayout(new GridLayout(1,2));
+        displayPnl.setLayout(new GridLayout(1, 2));
 
         mainPnl.add(tAndCPnl, BorderLayout.NORTH);
         mainPnl.add(displayPnl, BorderLayout.CENTER);
@@ -76,7 +69,7 @@ public class DataStreamsFrame extends JFrame {
         setVisible(true);
     }
 
-    private void createTitlePnl(){
+    private void createTitlePnl() {
         titlePnl = new JPanel();
 
         titleLbl = new JLabel("String Locator", JLabel.CENTER);
@@ -87,10 +80,10 @@ public class DataStreamsFrame extends JFrame {
 
         titlePnl.add(titleLbl);
 
-        tAndCPnl.add(titlePnl, new GridLayout(1,1));
+        tAndCPnl.add(titlePnl, new GridLayout(1, 1));
     }
 
-    private void createChosenStringPnl(){
+    private void createChosenStringPnl() {
         chosenStringPnl = new JPanel();
 
         fLbl = new JLabel("File:");
@@ -114,15 +107,14 @@ public class DataStreamsFrame extends JFrame {
         csTF.setEditable(false);
         fTF.setEditable(false);
 
-        tAndCPnl.add(chosenStringPnl, new GridLayout(2,1));
+        tAndCPnl.add(chosenStringPnl, new GridLayout(2, 1));
     }
 
-    private void createFileDisplayPnl(){
+    private void createFileDisplayPnl() {
         fileDisplayPnl = new JPanel();
 
 
-
-        fileTA =  new JTextArea(30, 90);
+        fileTA = new JTextArea(30, 90);
         scroller = new JScrollPane(fileTA);
         fileTA.setFont(new Font("Monospaced", Font.PLAIN, 10));
 
@@ -130,20 +122,20 @@ public class DataStreamsFrame extends JFrame {
         fileTA.setEditable(false);
 
 
-        displayPnl.add(fileDisplayPnl, new GridLayout(1,1));
+        displayPnl.add(fileDisplayPnl, new GridLayout(1, 1));
     }
 
-    private void createFilterDisplayPnl(){
+    private void createFilterDisplayPnl() {
         filterDisplayPnl = new JPanel();
 
-        filteredTA =  new JTextArea(30, 90);
+        filteredTA = new JTextArea(30, 90);
         scroller = new JScrollPane(filteredTA);
         filteredTA.setFont(new Font("Monospaced", Font.PLAIN, 10));
 
         filterDisplayPnl.add(scroller);
         filteredTA.setEditable(false);
 
-        displayPnl.add(filterDisplayPnl, new GridLayout(1,2));
+        displayPnl.add(filterDisplayPnl, new GridLayout(1, 2));
     }
 
     private void createButtonPanel() {
@@ -164,15 +156,18 @@ public class DataStreamsFrame extends JFrame {
         mainPnl.add(buttonPnl, BorderLayout.SOUTH);
 
         quitBtn.addActionListener(new ActionListener() {//DONE
-            JOptionPane pane =new JOptionPane();
+            JOptionPane pane = new JOptionPane();
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showConfirmDialog(pane,"Do you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
-                if(result == JOptionPane.YES_OPTION){System.exit(0);}
-                else {setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                int result = JOptionPane.showConfirmDialog(pane, "Do you want to exit?", "Exit", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                } else {
+                    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
                 }
-            }});
-
+            }
+        });
 
 
         loadBtn.addActionListener(new ActionListener() {
@@ -190,11 +185,11 @@ public class DataStreamsFrame extends JFrame {
 
             }
         });
-        
+
     }
 
     //read the file and the name --- and print
-    private void readFile(){
+    private void readFile() {
         Path target = new File(System.getProperty("user.dir")).toPath();
         target = target.resolve("src");
         chooser.setCurrentDirectory(target.toFile());
@@ -213,7 +208,6 @@ public class DataStreamsFrame extends JFrame {
                     chosenFileName = chosenFile.getName(); //print name of file
                     fTF.setText(chosenFileName);  //          ^+
 
-                    
 
                     //int lineNumber = Thread.currentThread().getStackTrace()[0].getLineNumber();
                     fileInfo = new ArrayList<>();
@@ -222,22 +216,14 @@ public class DataStreamsFrame extends JFrame {
                         fileInfo = stream
                                 .map(String::toUpperCase)
                                 .collect(Collectors.toList());
-                                //.indexOf();
+                        //.indexOf();
                     }
-
-
-
                     //fileInfo.forEach(fileTA::append);
-                    for(Object line : fileInfo){
+                    for (Object line : fileInfo) {
                         fileTA.append(line + "\n");
                     }
+                    fileTA.append("\n-------------------------------------------------------------------------------------------\n\n");
                     break;
-
-
-
-
-
-
                     //Stream lines = Files.lines(file); //break apart
                     //fileLines = Files.lines(file);
                     //printFile();
@@ -247,64 +233,27 @@ public class DataStreamsFrame extends JFrame {
                 fileTA.setText("File not chosen. Try again!");
             }
         } catch (IOException e) {
-            //throw new RuntimeException(e);
             e.printStackTrace();
         }
-       //return fileLines;
+        //return fileLines;
     }
-
-    //print the file with each new line from the file numbered
-   /* private void printFile(){
-        String lineNum;
-        String rec;
-        try{
-            for(Object line : readFile().toArray()){
-
-                fileTA.append(line + "\n");
-
-                fileInfo.add(String.valueOf(line));
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
-    */
 
     //filter the file
     private void filterFile() {
         String searchWords = JOptionPane.showInputDialog("Please word you would like to search for:");
         csTF.setText(searchWords);
+
+        //print the lines with keywords
         try {
-            List<String> results = fileInfo.stream().filter(str -> str.toLowerCase(Locale.ROOT).contains(searchWords)).collect(Collectors.toList());
+            List<String> results = fileInfo.stream().filter(str -> str.toLowerCase().replaceAll("[^A-Za-z]", " ").contains(searchWords)).collect(Collectors.toList());
 
             for (String lines : results) {
                 filteredTA.append(lines + "\n\n");
-            }
-
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-/*
-        Highlighter highlighter = filteredTA.getHighlighter();
-        Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.green);
-        int p0 = filteredTA.getText().indexOf(searchWords);
-        int p1 = p0 + searchWords.length();
-
-        try {
-            highlighter.removeAllHighlights();
-            highlighter.addHighlight(p0, p1, painter);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+                }
+                filteredTA.append("\n-------------------------------------------------------------------------------------------\n\n");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
- */
     }
 }
-
-
-
-

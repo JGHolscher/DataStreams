@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3c04f607-cb5c-4c31-9d8e-0fdd3ba00721" name="Changes" comment="file now prints next, add num to each line">
+    <list default="true" id="3c04f607-cb5c-4c31-9d8e-0fdd3ba00721" name="Changes" comment="works just need to add an identifier such as highlighting or line num">
+      <change afterPath="$PROJECT_DIR$/src/PieceOfEssay.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PremeireReflection.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/TheCobblerOfNimes.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataStreamsFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataStreamsFrame.java" afterDir="false" />
     </list>
@@ -95,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666929759478</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="works just need to add an identifier such as highlighting or line num">
+      <created>1666935848366</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1666935848366</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -112,6 +122,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="next up buttons" />
     <MESSAGE value="file now prints next, add num to each line" />
-    <option name="LAST_COMMIT_MESSAGE" value="file now prints next, add num to each line" />
+    <MESSAGE value="works just need to add an identifier such as highlighting or line num" />
+    <option name="LAST_COMMIT_MESSAGE" value="works just need to add an identifier such as highlighting or line num" />
   </component>
 </project>
