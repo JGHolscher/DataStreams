@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3c04f607-cb5c-4c31-9d8e-0fdd3ba00721" name="Changes" comment="works just need to add an identifier such as highlighting or line num">
-      <change afterPath="$PROJECT_DIR$/src/PieceOfEssay.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PremeireReflection.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TheCobblerOfNimes.txt" afterDir="false" />
+    <list default="true" id="3c04f607-cb5c-4c31-9d8e-0fdd3ba00721" name="Changes" comment="DONE">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataStreamsFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataStreamsFrame.java" afterDir="false" />
     </list>
@@ -105,7 +102,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666935848366</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="DONE">
+      <created>1666988095658</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1666988095659</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -123,6 +127,7 @@
     <MESSAGE value="next up buttons" />
     <MESSAGE value="file now prints next, add num to each line" />
     <MESSAGE value="works just need to add an identifier such as highlighting or line num" />
-    <option name="LAST_COMMIT_MESSAGE" value="works just need to add an identifier such as highlighting or line num" />
+    <MESSAGE value="DONE" />
+    <option name="LAST_COMMIT_MESSAGE" value="DONE" />
   </component>
 </project>

@@ -193,7 +193,7 @@ public class DataStreamsFrame extends JFrame {
         Path target = new File(System.getProperty("user.dir")).toPath();
         target = target.resolve("src");
         chooser.setCurrentDirectory(target.toFile());
-        Stream fileLines = null;
+        //Stream fileLines = null;
 
         try {
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -244,16 +244,12 @@ public class DataStreamsFrame extends JFrame {
         csTF.setText(searchWords);
 
         //print the lines with keywords
-        try {
-            List<String> results = fileInfo.stream().filter(str -> str.toLowerCase().replaceAll("[^A-Za-z]", " ").contains(searchWords)).collect(Collectors.toList());
+        List<String> results = fileInfo.stream().filter(str -> str.toLowerCase().replaceAll("[^A-Za-z]", " ").contains(searchWords)).collect(Collectors.toList());
 
-            for (String lines : results) {
-                filteredTA.append(lines + "\n\n");
-                }
-                filteredTA.append("\n-------------------------------------------------------------------------------------------\n\n");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        for (String lines : results) {
+            filteredTA.append(lines + "\n\n");
+            }
+        filteredTA.append("\n-------------------------------------------------------------------------------------------\n\n");
 
     }
 }
